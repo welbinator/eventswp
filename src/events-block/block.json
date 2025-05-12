@@ -6,7 +6,7 @@
 	"icon": "calendar-alt",
 	"description": "Displays events in a responsive grid.",
 	"supports": {
-	  "html": false
+		"html": false
 	},
 	"attributes": {
 		"columns": {
@@ -14,8 +14,7 @@
 			"default": 3
 		}
 	},
-
 	"editorScript": "file:./index.js",
+	"editorStyle": "eventswp-events-editor-style",
 	"render": "file:./render.php"
-  }
-  
+}

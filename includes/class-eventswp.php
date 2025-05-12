@@ -44,35 +44,43 @@ class Plugin {
         );
     }
     
-   
-
     public function register_blocks() {
-        // Register editor script handle manually
         wp_register_script(
             'eventswp-events-block',
-            EVENTSWP_PLUGIN_URL . 'src/events-block/index.js',
+            EVENTSWP_PLUGIN_URL . 'build/events-block/index.js',
             [ 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-i18n' ],
             EVENTSWP_VERSION,
             true
         );
     
-        // Register the block
-        register_block_type(
-            EVENTSWP_PLUGIN_DIR . 'build/events-block',
+        wp_localize_script(
+            'eventswp-events-block',
+            'eventswp_block_editor',
             [
-                'render_callback' => 'eventswp_render_events_block'
+                'pluginUrl' => trailingslashit( EVENTSWP_PLUGIN_URL ),
             ]
         );
     
-        // Include render file
-        $events_block_render = EVENTSWP_PLUGIN_DIR . 'build/events-block/render.php';
-        if ( file_exists( $events_block_render ) ) {
-            include_once $events_block_render;
-        }
+        wp_register_style(
+            'eventswp-events-editor-style',
+            EVENTSWP_PLUGIN_URL . 'build/events-block/index.css',
+            [],
+            EVENTSWP_VERSION
+        );
+    
+        register_block_type(
+            EVENTSWP_PLUGIN_DIR . 'build/events-block',
+            [
+                'render_callback' => 'eventswp_render_events_block',
+            ]
+        );
+
+         // Include render file
+         $events_block_render = EVENTSWP_PLUGIN_DIR . 'build/events-block/render.php';
+         if ( file_exists( $events_block_render ) ) {
+             include_once $events_block_render;
+         }
     }
-    
-    
-    
 
 	public function register_post_types() {
         register_post_type( 'eventswp-event', [

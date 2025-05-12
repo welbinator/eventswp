@@ -1,8 +1,9 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
-function eventswp_render_events_block( $attributes, $content ) {
-	ob_start();
+if ( ! function_exists( 'eventswp_render_events_block' ) ) {
+	function eventswp_render_events_block( $attributes, $content ) {
+		ob_start();
 
 	// Columns attribute (defaults to 3)
 	$columns = isset( $attributes['columns'] ) ? intval( $attributes['columns'] ) : 3;
@@ -94,4 +95,5 @@ function eventswp_render_events_block( $attributes, $content ) {
 	}
 
 	return ob_get_clean();
+}
 }
