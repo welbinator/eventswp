@@ -18,6 +18,9 @@ if ( ! defined( 'EVENTSWP_PLUGIN_URL' ) ) {
 	define( 'EVENTSWP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 }
 
+define( 'EVENTSWP_VERSION', filemtime( __FILE__ ) );
+
+
 // Autoloader or manual includes
 require_once EVENTSWP_PLUGIN_DIR . 'includes/class-eventswp.php';
 
