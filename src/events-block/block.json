@@ -12,8 +12,13 @@
 		"columns": {
 			"type": "number",
 			"default": 3
+		},
+		"layout": {
+			"type": "string",
+			"default": "grid"
 		}
 	},
+	
 	"editorScript": "file:./index.js",
 	"editorStyle": "eventswp-events-editor-style",
 	"render": "file:./render.php"

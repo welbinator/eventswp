@@ -6,7 +6,7 @@ import {
 } from '@wordpress/components';
 
 export default function Edit({ attributes, setAttributes }) {
-	const { columns } = attributes;
+	const { columns, layout } = attributes;
 
 	const blockProps = useBlockProps({ className: 'eventswp-preview-grid' });
 
@@ -28,7 +28,18 @@ export default function Edit({ attributes, setAttributes }) {
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Settings', 'eventswp')} initialOpen={true}>
+			<PanelBody title={__('Settings', 'eventswp')} initialOpen={true}>
+				<SelectControl
+					label={__('Layout', 'eventswp')}
+					value={layout}
+					options={[
+						{ label: 'Grid', value: 'grid' },
+						{ label: 'List View', value: 'list' }
+					]}
+					onChange={(value) => setAttributes({ layout: value })}
+				/>
+
+				{layout === 'grid' && (
 					<SelectControl
 						label={__('Number of Columns', 'eventswp')}
 						value={columns}
@@ -38,7 +49,9 @@ export default function Edit({ attributes, setAttributes }) {
 						}))}
 						onChange={(value) => setAttributes({ columns: parseInt(value, 10) })}
 					/>
-				</PanelBody>
+				)}
+			</PanelBody>
+
 			</InspectorControls>
 
 			<div {...blockProps}>

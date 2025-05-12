@@ -12,6 +12,10 @@
     "columns": {
       "type": "number",
       "default": 3
+    },
+    "layout": {
+      "type": "string",
+      "default": "grid"
     }
   },
   "editorScript": "file:./index.js",
