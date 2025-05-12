@@ -56,13 +56,13 @@ if (!function_exists('eventswp_render_events_block')) {
 
 				if ($layout === 'list') {
 					// List View layout
-					echo '<article class="flex flex-col md:flex-row gap-6 w-full py-6 border-b">';
-						echo '<div class="relative w-full md:w-1/3 aspect-[16/9]">';
+					echo '<article class="flex flex-col md:flex-row gap-6 !w-full py-6 border-b">';
+						echo '<div class="relative md:w-[20%] aspect-[16/9]">';
 							if ($image) {
 								echo '<img src="' . esc_url($image) . '" alt="' . esc_attr($title) . '" class="inset-0 max-w-full max-h-full" />';
 							}
 						echo '</div>';
-						echo '<div class="flex flex-col flex-grow">';
+						echo '<div class="flex flex-col flex-grow md:w-[80%]">';
 							echo '<h3 class="text-xl font-semibold mb-2"><a href="' . esc_url($link) . '" class="hover:underline">' . esc_html($title) . '</a></h3>';
 							echo '<p class="line-clamp-2">' . esc_html($excerpt) . '</p>';
 							echo '<div class="flex flex-col gap-2">';

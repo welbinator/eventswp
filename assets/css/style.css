@@ -271,11 +271,20 @@
   .max-h-full {
     max-height: 100%;
   }
+  .\!w-full {
+    width: 100% !important;
+  }
   .w-4 {
     width: calc(var(--spacing) * 4);
   }
   .w-5 {
     width: calc(var(--spacing) * 5);
+  }
+  .w-\[20\%\] {
+    width: 20%;
+  }
+  .w-\[80\%\] {
+    width: 80%;
   }
   .w-full {
     width: 100%;
@@ -414,6 +423,16 @@
   .md\:w-1\/3 {
     @media (width >= 48rem) {
       width: calc(1/3 * 100%);
+    }
+  }
+  .md\:w-\[20\%\] {
+    @media (width >= 48rem) {
+      width: 20%;
+    }
+  }
+  .md\:w-\[80\%\] {
+    @media (width >= 48rem) {
+      width: 80%;
     }
   }
   .md\:grid-cols-3 {
