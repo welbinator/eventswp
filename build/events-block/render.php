@@ -58,13 +58,30 @@ if ( ! function_exists( 'eventswp_render_events_block' ) ) {
 					echo '</h3>';
 					echo '<div class="flex flex-col gap-2 mt-auto">';
 
-						// Date
+						// Date & Time
+						$event_end_time = get_post_meta( $event_id, 'event_end_time', true );
+
 						if ( $event_date ) {
 							echo '<div class="flex items-center text-sm">';
 							echo '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-4 h-4 mr-2 flex-shrink-0"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>';
-							echo '<span>' . esc_html( date_i18n( 'F j, Y', strtotime( $event_date ) ) ) . '</span>';
+
+							$date = date_i18n( 'F j, Y', strtotime( $event_date ) );
+
+							if ( $event_time && $event_end_time ) {
+								$start = date_i18n( 'g:i A', strtotime( $event_time ) );
+								$end   = date_i18n( 'g:i A', strtotime( $event_end_time ) );
+								$time_display = "$start - $end";
+								echo '<span>' . esc_html( "$date • $time_display" ) . '</span>';
+							} elseif ( $event_time ) {
+								$start = date_i18n( 'g:i A', strtotime( $event_time ) );
+								echo '<span>' . esc_html( "$date • $start" ) . '</span>';
+							} else {
+								echo '<span>' . esc_html( $date ) . '</span>';
+							}
+
 							echo '</div>';
 						}
+
 
 						// Venue
 						if ( $venue_name || $venue_address ) {
