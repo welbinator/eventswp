@@ -14,6 +14,8 @@ class Plugin {
 	public function init() {
         add_action( 'init', [ $this, 'register_post_types' ] );
         add_action( 'init', [ $this, 'register_taxonomies' ] );
+        add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_frontend_styles' ] );
+
     
         Meta::init();
         Settings::init();
@@ -24,14 +26,21 @@ class Plugin {
     }
 
     public function enqueue_editor_assets() {
-        $asset_url = EVENTSWP_PLUGIN_URL . 'assets/js/editor-sidebar.js';
-    
         wp_enqueue_script(
             'eventswp-editor-sidebar',
-            $asset_url,
+            EVENTSWP_PLUGIN_URL . 'assets/js/editor-sidebar.js',
             [ 'wp-plugins', 'wp-edit-post', 'wp-element', 'wp-components', 'wp-data' ],
-            filemtime( EVENTSWP_PLUGIN_DIR . 'assets/js/editor-sidebar.js' ),
+            EVENTSWP_VERSION,
             true
+        );
+    }
+    
+    public function enqueue_frontend_styles() {
+        wp_enqueue_style(
+            'eventswp-frontend',
+            EVENTSWP_PLUGIN_URL . 'assets/css/style.css',
+            [],
+            EVENTSWP_VERSION
         );
     }
     
