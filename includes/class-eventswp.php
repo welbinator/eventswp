@@ -15,8 +15,8 @@ class Plugin {
         add_action( 'init', [ $this, 'register_post_types' ] );
         add_action( 'init', [ $this, 'register_taxonomies' ] );
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_frontend_styles' ] );
+        add_action( 'init', [ $this, 'register_blocks' ] );
 
-    
         Meta::init();
         Settings::init();
     
@@ -43,6 +43,34 @@ class Plugin {
             EVENTSWP_VERSION
         );
     }
+    
+   
+
+    public function register_blocks() {
+        // Register editor script handle manually
+        wp_register_script(
+            'eventswp-events-block',
+            EVENTSWP_PLUGIN_URL . 'src/events-block/index.js',
+            [ 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-i18n' ],
+            EVENTSWP_VERSION,
+            true
+        );
+    
+        // Register the block
+        register_block_type(
+            EVENTSWP_PLUGIN_DIR . 'build/events-block',
+            [
+                'render_callback' => 'eventswp_render_events_block'
+            ]
+        );
+    
+        // Include render file
+        $events_block_render = EVENTSWP_PLUGIN_DIR . 'build/events-block/render.php';
+        if ( file_exists( $events_block_render ) ) {
+            include_once $events_block_render;
+        }
+    }
+    
     
     
 
