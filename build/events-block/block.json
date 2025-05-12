@@ -8,6 +8,12 @@
   "supports": {
     "html": false
   },
+  "attributes": {
+    "columns": {
+      "type": "number",
+      "default": 3
+    }
+  },
   "editorScript": "file:./index.js",
   "render": "file:./render.php"
 }

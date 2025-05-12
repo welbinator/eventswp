@@ -4,6 +4,20 @@ defined( 'ABSPATH' ) || exit;
 function eventswp_render_events_block( $attributes, $content ) {
 	ob_start();
 
+	// Columns attribute (defaults to 3)
+	$columns = isset( $attributes['columns'] ) ? intval( $attributes['columns'] ) : 3;
+
+	// Generate Tailwind grid column classes
+	$grid_class = 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3';
+	switch ( $columns ) {
+		case 1: $grid_class = 'grid-cols-1'; break;
+		case 2: $grid_class = 'grid-cols-1 sm:grid-cols-2'; break;
+		case 3: $grid_class = 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'; break;
+		case 4: $grid_class = 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'; break;
+		case 5: $grid_class = 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'; break;
+		case 6: $grid_class = 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6'; break;
+	}
+
 	$events = new WP_Query([
 		'post_type'      => 'eventswp-event',
 		'posts_per_page' => -1,
@@ -12,12 +26,13 @@ function eventswp_render_events_block( $attributes, $content ) {
 
 	if ( $events->have_posts() ) {
 		echo '<div class="container mx-auto px-4 py-8">';
-		echo '<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">';
+		echo '<div class="grid ' . esc_attr( $grid_class ) . ' gap-6">';
 
 		while ( $events->have_posts() ) {
 			$events->the_post();
 
-			$event_id = get_the_ID();
+			global $post;
+			$event_id = $post->ID;
 			$event_date = get_post_meta( $event_id, 'event_date', true );
 			$event_time = get_post_meta( $event_id, 'event_time', true );
 			$venue_name = get_post_meta( $event_id, 'event_venue_name', true );
@@ -29,10 +44,11 @@ function eventswp_render_events_block( $attributes, $content ) {
 			$image_url = get_the_post_thumbnail_url( $event_id, 'large' );
 			$event_link = get_permalink( $event_id );
 
+
 			echo '<div class="h-full"><article class="flex flex-col h-full rounded overflow-hidden">';
-				echo '<div class="relative w-full aspect-[16/9]">';
+				echo '<div class="relative w-full aspect-[16/9] h-[200px]">';
 					if ( $image_url ) {
-						echo '<img src="' . esc_url( $image_url ) . '" alt="' . esc_attr( get_the_title() ) . '" class="object-cover w-full h-full absolute inset-0" />';
+						echo '<img src="' . esc_url( $image_url ) . '" alt="' . esc_attr( get_the_title() ) . '" class="inset-0 max-w-full max-h-full" />';
 					}
 				echo '</div>';
 				echo '<div class="flex flex-col flex-grow p-4">';
