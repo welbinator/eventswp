@@ -6,16 +6,17 @@ document.addEventListener('DOMContentLoaded', function () {
 		initialView: 'dayGridMonth',
 		eventDisplay: 'block',
 		events: function (fetchInfo, successCallback, failureCallback) {
-			fetch(eventswp_calendar.events)
-				.then(response => response.json())
-				.then(data => {
-					successCallback(data); // we now return fully formatted events from PHP
-				})
-				.catch(error => {
-					console.error('Error fetching events:', error);
-					failureCallback(error);
-				});
-		},
+            fetch(eventswp_calendar.events + `?start=${fetchInfo.startStr}&end=${fetchInfo.endStr}`)
+                .then(response => response.json())
+                .then(data => {
+                    successCallback(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching events:', error);
+                    failureCallback(error);
+                });
+        },
+        
 		eventContent: function (arg) {
             const start = arg.event.extendedProps.start_time || '';
             const end   = arg.event.extendedProps.end_time || '';

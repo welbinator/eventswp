@@ -52,6 +52,12 @@ class Plugin {
 				[],
 				'6.1.11'
 			);
+            wp_enqueue_style(
+                'eventswp-calendar-custom',
+                EVENTSWP_PLUGIN_URL . 'assets/css/calendar-custom.css',
+                [ 'fullcalendar-css' ],
+                EVENTSWP_VERSION
+            );
 			wp_enqueue_script(
 				'fullcalendar-js',
 				'https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js',
@@ -134,47 +140,60 @@ class Plugin {
 	}
 
 	public function get_calendar_events( $request ) {
-        $events = get_posts([
+        $start_param = $request->get_param( 'start' );
+        $end_param   = $request->get_param( 'end' );
+    
+        $meta_query = [];
+    
+        // Only filter by date if FullCalendar provided a range
+        if ( $start_param && $end_param ) {
+            $meta_query[] = [
+                'key'     => 'event_date',
+                'value'   => [ $start_param, $end_param ],
+                'compare' => 'BETWEEN',
+                'type'    => 'DATE',
+            ];
+        }
+    
+        $query = new \WP_Query([
             'post_type'      => 'eventswp-event',
             'post_status'    => 'publish',
             'posts_per_page' => -1,
+            'meta_query'     => $meta_query,
         ]);
     
         $data = [];
     
-        foreach ( $events as $event ) {
-            $event_id = $event->ID;
+        while ( $query->have_posts() ) {
+            $query->the_post();
+            $event_id = get_the_ID();
     
-            $date = get_post_meta( $event_id, 'event_date', true );
+            $date  = get_post_meta( $event_id, 'event_date', true );
             $start = get_post_meta( $event_id, 'event_time', true );
             $end   = get_post_meta( $event_id, 'event_end_time', true );
     
-            // Skip if date or start time is missing
             if ( ! $date || ! $start ) {
                 continue;
             }
     
-            // Ensure proper formatting
             $start_dt = strtotime( "$date $start" );
             $end_dt   = $end ? strtotime( "$date $end" ) : null;
     
-            if ( ! $start_dt ) {
-                continue;
-            }
-    
             $data[] = [
-                'title'      => get_the_title( $event_id ),
+                'title'      => get_the_title(),
                 'start'      => date( 'c', $start_dt ),
                 'end'        => $end_dt ? date( 'c', $end_dt ) : null,
-                'url'        => get_permalink( $event_id ),
+                'url'        => get_permalink(),
                 'start_time' => date( 'g:i A', strtotime( $start ) ),
                 'end_time'   => $end ? date( 'g:i A', strtotime( $end ) ) : null,
             ];
-            
         }
+    
+        wp_reset_postdata();
     
         return rest_ensure_response( $data );
     }
+    
     
 
 	public function register_post_types() {

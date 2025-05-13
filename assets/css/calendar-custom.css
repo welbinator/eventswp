@@ -1,0 +1,10 @@
+.fc-h-event, .fc-h-event .fc-event-main {
+    background-color: unset;
+    color: unset;
+    border: unset;
+}
+
+.fc .fc-daygrid-day-top a, .fc-scrollgrid-sync-inner a {
+    text-decoration: none;
+    color: unset;
+}
