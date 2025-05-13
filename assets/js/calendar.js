@@ -4,25 +4,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	const calendar = new FullCalendar.Calendar(calendarEl, {
 		initialView: 'dayGridMonth',
+		eventDisplay: 'block',
 		events: function (fetchInfo, successCallback, failureCallback) {
-			fetch(eventswp_calendar.events + '?per_page=100')
+			fetch(eventswp_calendar.events)
 				.then(response => response.json())
 				.then(data => {
-					const events = data.map(post => {
-						const meta = post.meta || {};
-						return {
-							title: post.title.rendered,
-							start: meta.event_date || post.date,
-							url: post.link,
-						};
-					});
-					successCallback(events);
+					successCallback(data); // we now return fully formatted events from PHP
 				})
 				.catch(error => {
 					console.error('Error fetching events:', error);
 					failureCallback(error);
 				});
-		}
+		},
+		eventContent: function (arg) {
+            const start = arg.event.extendedProps.start_time || '';
+            const end   = arg.event.extendedProps.end_time || '';
+            const timeHTML = `<div class="eventswp-time">${start}${end ? ' - ' + end : ''}</div>`;
+            const titleHTML = `<div class="eventswp-title"><a href="${arg.event.url}">${arg.event.title}</a></div>`;
+        
+            return {
+                html: timeHTML + titleHTML
+            };
+        }
+        
 	});
 
 	calendar.render();

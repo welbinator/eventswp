@@ -34,8 +34,13 @@
 			el('p', {}, 'Event Date'),
 			el(DatePicker, {
 				currentDate: get('event_date'),
-				onChange: (date) => set('event_date', date),
+				onChange: function (date) {
+					// Format to YYYY-MM-DD
+					const formatted = new Date(date).toISOString().split('T')[0];
+					set('event_date', formatted);
+				}
 			}),
+			
 			el(TextControl, {
 				label: 'Event Start Time',
 				type: 'time',
