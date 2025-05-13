@@ -17,9 +17,7 @@ get_header(); ?>
 <div class="container">
 	<article class="max-w-4xl mx-auto">
 		<?php if ( $featured_image_url ) : ?>
-			<div class="relative w-full aspect-[16/9] mb-6">
-				<img src="<?php echo esc_url( $featured_image_url ); ?>" alt="<?php the_title_attribute(); ?>" class="object-cover rounded w-full h-full absolute inset-0" />
-			</div>
+				<img src="<?php echo esc_url( $featured_image_url ); ?>" alt="<?php the_title_attribute(); ?>" class="object-cover rounded w-auto max-h-[300px] inset-0" />
 		<?php endif; ?>
 
 		<header class="mb-8">
