@@ -1,106 +1,91 @@
 (function (wp) {
-	var registerPlugin = wp.plugins.registerPlugin;
-	var PluginDocumentSettingPanel = wp.editPost.PluginDocumentSettingPanel;
-	var TextControl = wp.components.TextControl;
-	var CheckboxControl = wp.components.CheckboxControl;
-	var DatePicker = wp.components.DatePicker;
-	var useSelect = wp.data.useSelect;
-	var useDispatch = wp.data.useDispatch;
-	var el = wp.element.createElement;
+	const { registerPlugin } = wp.plugins;
+	const { PluginDocumentSettingPanel } = wp.editPost;
+	const { TextControl, CheckboxControl, DatePicker } = wp.components;
+	const { useSelect, useDispatch } = wp.data;
+	const { createElement: el } = wp.element;
 
-	var EventsMetaPanel = function () {
-		var meta = useSelect(function (select) {
-			return select('core/editor').getEditedPostAttribute('meta') || {};
-		}, []);
+	const EventsMetaPanel = function () {
+		const postType = useSelect((select) =>
+			select('core/editor').getCurrentPostType()
+		);
 
-		var editPost = useDispatch('core/editor').editPost;
+		if (postType !== 'eventswp-event') {
+			return null; // ✅ Do not render the panel if not our post type
+		}
 
-		var get = function (key) {
-			return typeof meta[key] !== 'undefined' ? meta[key] : '';
-		};
+		const meta = useSelect((select) =>
+			select('core/editor').getEditedPostAttribute('meta') || {}
+		, []);
 
-		var set = function (key, value) {
-			var updated = {};
-			updated[key] = value;
-			editPost({ meta: Object.assign({}, meta, updated) });
-		};
+		const { editPost } = useDispatch('core/editor');
+
+		const get = (key) => (typeof meta[key] !== 'undefined' ? meta[key] : '');
+		const set = (key, value) =>
+			editPost({ meta: { ...meta, [key]: value } });
 
 		return el(
 			PluginDocumentSettingPanel,
 			{
 				name: 'eventswp-event-details',
 				title: 'Event Details',
-				className: 'eventswp-event-sidebar'
+				className: 'eventswp-event-sidebar',
 			},
 			el('p', {}, 'Event Date'),
 			el(DatePicker, {
 				currentDate: get('event_date'),
 				onChange: function (date) {
-					set('event_date', date);
+					// Format to YYYY-MM-DD
+					const formatted = new Date(date).toISOString().split('T')[0];
+					set('event_date', formatted);
 				}
 			}),
+			
 			el(TextControl, {
 				label: 'Event Start Time',
 				type: 'time',
 				value: get('event_time'),
-				onChange: function (value) {
-					set('event_time', value);
-				},
-				inputProps: { step: 60 }
+				onChange: (value) => set('event_time', value),
+				inputProps: { step: 60 },
 			}),
-			
 			el(TextControl, {
 				label: 'Event End Time',
 				type: 'time',
 				value: get('event_end_time'),
-				onChange: function (value) {
-					set('event_end_time', value);
-				},
-				inputProps: { step: 60 }
+				onChange: (value) => set('event_end_time', value),
+				inputProps: { step: 60 },
 			}),
-            el(TextControl, {
-                label: 'Venue Name',
-                value: get('event_venue_name'),
-                onChange: function (value) {
-                    set('event_venue_name', value);
-                }
-            }),
-            // Venue Address
-            el(TextControl, {
-                label: 'Venue Address',
-                value: get('event_venue_address'),
-                onChange: function (value) {
-                    set('event_venue_address', value);
-                }
-            }),
-
+			el(TextControl, {
+				label: 'Venue Name',
+				value: get('event_venue_name'),
+				onChange: (value) => set('event_venue_name', value),
+			}),
+			el(TextControl, {
+				label: 'Venue Address',
+				value: get('event_venue_address'),
+				onChange: (value) => set('event_venue_address', value),
+			}),
 			el(TextControl, {
 				label: 'Contact Phone',
 				value: get('event_contact_phone'),
-				onChange: function (value) {
-					set('event_contact_phone', value);
-				}
+				onChange: (value) => set('event_contact_phone', value),
 			}),
 			el(TextControl, {
 				label: 'Contact Email',
 				type: 'email',
 				value: get('event_contact_email'),
-				onChange: function (value) {
-					set('event_contact_email', value);
-				}
+				onChange: (value) => set('event_contact_email', value),
 			}),
 			el(CheckboxControl, {
 				label: 'Show Google Map',
 				checked: !!get('event_show_map'),
-				onChange: function (checked) {
-					set('event_show_map', checked);
-				}
+				onChange: (checked) => set('event_show_map', checked),
 			})
 		);
 	};
 
 	registerPlugin('eventswp-sidebar', {
 		render: EventsMetaPanel,
-		icon: 'calendar-alt'
+		icon: 'calendar-alt',
 	});
 })(window.wp);
