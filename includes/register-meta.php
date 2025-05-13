@@ -42,6 +42,17 @@ class Meta {
 			},
 		] );
 
+		register_post_meta( 'eventswp-event', 'event_end_time', [
+			'type'         => 'string',
+			'single'       => true,
+			'show_in_rest' => true,
+			'sanitize_callback' => 'sanitize_text_field',
+			'auth_callback' => function() {
+				return current_user_can( 'edit_posts' );
+			},
+		] );
+		
+
 		register_post_meta( $post_type, 'event_venue_name', [
             'show_in_rest'       => true,
             'single'             => true,

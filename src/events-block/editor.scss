@@ -1,0 +1,36 @@
+.eventswp-preview-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 20px;
+	margin-top: 20px;
+}
+
+.eventswp-preview-item {
+	background: #f9f9f9;
+	padding: 16px;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.eventswp-preview-image img {
+	width: 100%;
+	height: auto;
+	border-radius: 4px;
+}
+
+.eventswp-preview-title {
+	font-size: 16px;
+	font-weight: bold;
+	margin: 12px 0 4px;
+}
+
+.eventswp-preview-date,
+.eventswp-preview-location,
+.eventswp-preview-category {
+	font-size: 14px;
+	color: #555;
+	margin: 2px 0;
+}

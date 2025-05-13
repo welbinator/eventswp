@@ -15,8 +15,8 @@ class Plugin {
         add_action( 'init', [ $this, 'register_post_types' ] );
         add_action( 'init', [ $this, 'register_taxonomies' ] );
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_frontend_styles' ] );
+        add_action( 'init', [ $this, 'register_blocks' ] );
 
-    
         Meta::init();
         Settings::init();
     
@@ -44,7 +44,43 @@ class Plugin {
         );
     }
     
+    public function register_blocks() {
+        wp_register_script(
+            'eventswp-events-block',
+            EVENTSWP_PLUGIN_URL . 'build/events-block/index.js',
+            [ 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-i18n' ],
+            EVENTSWP_VERSION,
+            true
+        );
     
+        wp_localize_script(
+            'eventswp-events-block',
+            'eventswp_block_editor',
+            [
+                'pluginUrl' => trailingslashit( EVENTSWP_PLUGIN_URL ),
+            ]
+        );
+    
+        wp_register_style(
+            'eventswp-events-editor-style',
+            EVENTSWP_PLUGIN_URL . 'build/events-block/index.css',
+            [],
+            EVENTSWP_VERSION
+        );
+    
+        register_block_type(
+            EVENTSWP_PLUGIN_DIR . 'build/events-block',
+            [
+                'render_callback' => 'eventswp_render_events_block',
+            ]
+        );
+
+         // Include render file
+         $events_block_render = EVENTSWP_PLUGIN_DIR . 'build/events-block/render.php';
+         if ( file_exists( $events_block_render ) ) {
+             include_once $events_block_render;
+         }
+    }
 
 	public function register_post_types() {
         register_post_type( 'eventswp-event', [

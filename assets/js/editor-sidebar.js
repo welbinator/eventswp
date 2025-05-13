@@ -40,11 +40,21 @@
 				}
 			}),
 			el(TextControl, {
-				label: 'Event Time',
+				label: 'Event Start Time',
 				type: 'time',
 				value: get('event_time'),
 				onChange: function (value) {
 					set('event_time', value);
+				},
+				inputProps: { step: 60 }
+			}),
+			
+			el(TextControl, {
+				label: 'Event End Time',
+				type: 'time',
+				value: get('event_end_time'),
+				onChange: function (value) {
+					set('event_end_time', value);
 				},
 				inputProps: { step: 60 }
 			}),

@@ -1,0 +1,24 @@
+{
+  "apiVersion": 2,
+  "name": "eventswp/events-block",
+  "title": "Events Block",
+  "category": "widgets",
+  "icon": "calendar-alt",
+  "description": "Displays events in a responsive grid.",
+  "supports": {
+    "html": false
+  },
+  "attributes": {
+    "columns": {
+      "type": "number",
+      "default": 3
+    },
+    "layout": {
+      "type": "string",
+      "default": "grid"
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "eventswp-events-editor-style",
+  "render": "file:./render.php"
+}
