@@ -208,20 +208,38 @@ class Plugin {
     
 
 	public function register_post_types() {
-		register_post_type( 'eventswp-event', [
-			'labels' => [
-				'name' => __( 'Events', 'eventswp' ),
-				'singular_name' => __( 'Event', 'eventswp' ),
-				'menu_name' => __( 'Events', 'eventswp' ),
-			],
-			'public' => true,
-			'has_archive' => true,
-			'show_in_rest' => true,
-			'supports' => [ 'title', 'editor', 'thumbnail', 'custom-fields' ],
-			'menu_position' => 5,
-			'menu_icon' => 'dashicons-calendar-alt',
-		] );
-	}
+	register_post_type( 'eventswp-event', [
+		'labels' => [
+			'name'                  => __( 'Events', 'eventswp' ),
+			'singular_name'         => __( 'Event', 'eventswp' ),
+			'add_new'               => __( 'Add New', 'eventswp' ),
+			'add_new_item'          => __( 'Add New Event', 'eventswp' ),
+			'edit_item'             => __( 'Edit Event', 'eventswp' ),
+			'new_item'              => __( 'New Event', 'eventswp' ),
+			'view_item'             => __( 'View Event', 'eventswp' ),
+			'view_items'            => __( 'View Events', 'eventswp' ),
+			'search_items'          => __( 'Search Events', 'eventswp' ),
+			'not_found'             => __( 'No events found', 'eventswp' ),
+			'not_found_in_trash'    => __( 'No events found in Trash', 'eventswp' ),
+			'all_items'             => __( 'All Events', 'eventswp' ),
+			'archives'              => __( 'Event Archives', 'eventswp' ),
+			'insert_into_item'      => __( 'Insert into event', 'eventswp' ),
+			'uploaded_to_this_item' => __( 'Uploaded to this event', 'eventswp' ),
+			'filter_items_list'     => __( 'Filter events list', 'eventswp' ),
+			'items_list'            => __( 'Events list', 'eventswp' ),
+			'items_list_navigation' => __( 'Events list navigation', 'eventswp' ),
+			'menu_name'             => __( 'Events', 'eventswp' ),
+			'name_admin_bar'        => __( 'Event', 'eventswp' ), // <- this is the one that controls the admin bar text like "Add Event"
+		],
+		'public'             => true,
+		'has_archive'        => true,
+		'show_in_rest'       => true,
+		'supports'           => [ 'title', 'editor', 'thumbnail' ],
+		'menu_position'      => 5,
+		'menu_icon'          => 'dashicons-calendar-alt',
+	] );
+}
+
 
 	public function register_taxonomies() {
 		register_taxonomy( 'event-category', 'eventswp-event', [
