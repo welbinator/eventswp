@@ -18,7 +18,7 @@ if ( ! defined( 'EVENTSWP_PLUGIN_URL' ) ) {
 	define( 'EVENTSWP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 }
 
-define( 'EVENTSWP_VERSION', 1.0.1 );
+define( 'EVENTSWP_VERSION', '1.0.1' );
 
 
 // Autoloader or manual includes
