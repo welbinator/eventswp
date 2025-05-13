@@ -16,6 +16,13 @@
     "layout": {
       "type": "string",
       "default": "grid"
+    },
+    "categories": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "number"
+      }
     }
   },
   "editorScript": "file:./index.js",
