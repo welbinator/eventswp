@@ -1,0 +1,57 @@
+name: Create Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release Tag'
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Create temporary directory for packaging
+      - name: Create temporary directory
+        run: mkdir temp_dir
+
+      # Copy all project files to the temp_dir, excluding specific files/folders
+      - name: Copy all files except excluded ones
+        run: |
+          rsync -av --progress ./ temp_dir/ \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude 'node_modules' \
+            --exclude '.DS_Store' \
+            --exclude '*.log' \
+            --exclude '.gitignore' \
+            --exclude 'README.md' \
+            --exclude '.env' \
+            --exclude 'package.json' \
+            --exclude 'package-lock.json' \
+            --exclude 'src' 
+
+      # Rename directory to the desired folder name
+      - name: Rename directory
+        run: mv temp_dir eventswp
+
+      # Zip the packaged files
+      - name: Create zip archive
+        run: |
+          zip -r eventswp-${{ github.event.inputs.tag }}.zip eventswp
+
+      # Create a new GitHub release with the packaged zip
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: eventswp-${{ github.event.inputs.tag }}.zip
+          tag_name: ${{ github.event.inputs.tag }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+permissions:
+  contents: write
