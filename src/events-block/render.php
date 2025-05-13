@@ -59,7 +59,7 @@ if (!function_exists('eventswp_render_events_block')) {
 				$venue_address  = get_post_meta($event_id, 'event_venue_address', true);
 				$categories     = wp_get_post_terms($event_id, 'event-category');
 				$types          = wp_get_post_terms($event_id, 'event-type');
-				$category       = !empty($categories) ? $categories[0]->name : '';
+				$category       = !empty($categories) ? implode(', ', wp_list_pluck($categories, 'name')) : '';
 				$type           = !empty($types) ? $types[0]->name : '';
 
 				$date = $date_raw ? date_i18n('F j, Y', strtotime($date_raw)) : '';
