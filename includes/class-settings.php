@@ -52,10 +52,42 @@ class Settings {
 			'eventswp-settings',
 			'eventswp_main_section'
 		);
+
+		register_setting( 'eventswp_settings', 'eventswp_calendar_page_id' );
+
+		add_settings_field(
+			'eventswp_calendar_page_id',
+			__( 'Calendar Page', 'eventswp' ),
+			[ __CLASS__, 'render_calendar_page_field' ],
+			'eventswp-settings',
+			'eventswp_main_section'
+		);
+
 	}
 
 	public static function render_api_key_field() {
 		$value = esc_attr( get_option( 'eventswp_google_maps_api_key' ) );
 		echo '<input type="text" name="eventswp_google_maps_api_key" value="' . $value . '" class="regular-text">';
 	}
+
+	public static function render_calendar_page_field() {
+		$selected_id = get_option( 'eventswp_calendar_page_id' );
+		$pages = get_pages();
+	
+		echo '<select name="eventswp_calendar_page_id">';
+		echo '<option value="">' . esc_html__( '-- Select a Page --', 'eventswp' ) . '</option>';
+	
+		foreach ( $pages as $page ) {
+			$selected = selected( $selected_id, $page->ID, false );
+			printf(
+				'<option value="%d" %s>%s</option>',
+				$page->ID,
+				$selected,
+				esc_html( $page->post_title )
+			);
+		}
+	
+		echo '</select>';
+	}
+	
 }

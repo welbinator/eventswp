@@ -23,6 +23,8 @@ class Plugin {
         add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_editor_assets' ] );
 
         add_filter( 'single_template', [ $this, 'load_custom_single_template' ] );
+
+        $this->maybe_override_calendar_page();
     }
 
     public function enqueue_editor_assets() {
@@ -42,7 +44,36 @@ class Plugin {
             [],
             EVENTSWP_VERSION
         );
+    
+        $calendar_page_id = get_option( 'eventswp_calendar_page_id' );
+        if ( is_page( $calendar_page_id ) ) {
+            wp_enqueue_style(
+                'fullcalendar-css',
+                'https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css',
+                [],
+                '6.1.11'
+            );
+            wp_enqueue_script(
+                'fullcalendar-js',
+                'https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js',
+                [],
+                '6.1.11',
+                true
+            );
+            wp_enqueue_script(
+                'eventswp-calendar-js',
+                EVENTSWP_PLUGIN_URL . 'assets/js/calendar.js',
+                [ 'fullcalendar-js' ],
+                EVENTSWP_VERSION,
+                true
+            );
+    
+            wp_localize_script( 'eventswp-calendar-js', 'eventswp_calendar', [
+                'events' => rest_url( 'wp/v2/eventswp-event' ), // temporary placeholder
+            ] );
+        }
     }
+    
     
     public function register_blocks() {
         wp_register_script(
@@ -81,6 +112,25 @@ class Plugin {
              include_once $events_block_render;
          }
     }
+
+    public function maybe_override_calendar_page() {
+        add_filter( 'the_content', function( $content ) {
+            $calendar_page_id = get_option( 'eventswp_calendar_page_id' );
+    
+            if ( is_page( $calendar_page_id ) ) {
+                ob_start();
+                do_action( 'eventswp_render_calendar' );
+                return ob_get_clean();
+            }
+    
+            return $content;
+        } );
+    }
+
+   
+   
+
+    
 
 	public function register_post_types() {
         register_post_type( 'eventswp-event', [
@@ -143,3 +193,12 @@ class Plugin {
     }
     
 }
+
+add_action( 'eventswp_render_calendar', function() {
+    ?>
+    <div id="eventswp-calendar" class="my-10">
+        <h2 class="text-2xl font-bold mb-4">Event Calendar</h2>
+        <?php echo '<div id="eventswp-calendar" class="max-w-6xl mx-auto p-4"></div>'; ?>
+    </div>
+    <?php
+} );
