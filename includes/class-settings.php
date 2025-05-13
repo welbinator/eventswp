@@ -37,10 +37,13 @@ class Settings {
 
 	public static function register_settings() {
 		register_setting( 'eventswp_settings', 'eventswp_google_maps_api_key' );
+		register_setting( 'eventswp_settings', 'eventswp_calendar_page_id' );
+		register_setting( 'eventswp_settings', 'eventswp_calendar_title' );
+		register_setting( 'eventswp_settings', 'eventswp_hide_calendar_title' );
 
 		add_settings_section(
 			'eventswp_main_section',
-			__( 'Google Maps Settings', 'eventswp' ),
+			__( 'Calendar Settings', 'eventswp' ),
 			null,
 			'eventswp-settings'
 		);
@@ -53,8 +56,6 @@ class Settings {
 			'eventswp_main_section'
 		);
 
-		register_setting( 'eventswp_settings', 'eventswp_calendar_page_id' );
-
 		add_settings_field(
 			'eventswp_calendar_page_id',
 			__( 'Calendar Page', 'eventswp' ),
@@ -63,6 +64,21 @@ class Settings {
 			'eventswp_main_section'
 		);
 
+		add_settings_field(
+			'eventswp_calendar_title',
+			__( 'Calendar Title', 'eventswp' ),
+			[ __CLASS__, 'render_calendar_title_field' ],
+			'eventswp-settings',
+			'eventswp_main_section'
+		);
+
+		add_settings_field(
+			'eventswp_hide_calendar_title',
+			__( 'Hide Calendar Title', 'eventswp' ),
+			[ __CLASS__, 'render_hide_title_field' ],
+			'eventswp-settings',
+			'eventswp_main_section'
+		);
 	}
 
 	public static function render_api_key_field() {
@@ -73,10 +89,10 @@ class Settings {
 	public static function render_calendar_page_field() {
 		$selected_id = get_option( 'eventswp_calendar_page_id' );
 		$pages = get_pages();
-	
+
 		echo '<select name="eventswp_calendar_page_id">';
 		echo '<option value="">' . esc_html__( '-- Select a Page --', 'eventswp' ) . '</option>';
-	
+
 		foreach ( $pages as $page ) {
 			$selected = selected( $selected_id, $page->ID, false );
 			printf(
@@ -86,8 +102,19 @@ class Settings {
 				esc_html( $page->post_title )
 			);
 		}
-	
+
 		echo '</select>';
 	}
-	
+
+	public static function render_calendar_title_field() {
+		$value = esc_attr( get_option( 'eventswp_calendar_title', 'Event Calendar' ) );
+		echo '<input type="text" name="eventswp_calendar_title" value="' . $value . '" class="regular-text">';
+	}
+
+	public static function render_hide_title_field() {
+		$checked = checked( get_option( 'eventswp_hide_calendar_title' ), '1', false );
+		echo '<label><input type="checkbox" name="eventswp_hide_calendar_title" value="1" ' . $checked . '> ';
+		echo esc_html__( 'Do not display a title above the calendar.', 'eventswp' );
+		echo '</label>';
+	}
 }

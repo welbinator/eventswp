@@ -121,15 +121,26 @@ class Plugin {
 		if ( is_page( $calendar_page_id ) ) {
 			ob_start();
 			?>
-			<div id="eventswp-calendar" class="my-10">
-				<h2 class="text-2xl font-bold mb-4">Event Calendar</h2>
-				<div class="max-w-6xl mx-auto p-4" id="eventswp-calendar"></div>
+			<div class="my-10">
+			<?php
+			$hide_title = get_option( 'eventswp_hide_calendar_title' );
+			$title = get_option( 'eventswp_calendar_title', 'Event Calendar' );
+
+			if ( ! $hide_title && ! empty( $title ) ) {
+				echo '<h2 class="text-2xl font-bold mb-4">' . esc_html( $title ) . '</h2>';
+			}
+			?>
+
+				<div class="max-w-6xl mx-auto p-4">
+					<div id="eventswp-calendar"></div>
+				</div>
 			</div>
 			<?php
 			return ob_get_clean();
 		}
 		return $content;
 	}
+	
 
 	public function register_calendar_endpoint() {
 		register_rest_route( 'eventswp/v1', '/calendar-events', [
