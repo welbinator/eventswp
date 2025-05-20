@@ -68,7 +68,8 @@ function render_event_card($layout = 'grid') {
 			</div>
 		</article>
 	<?php else: ?>
-		<a href="<?= esc_url($link) ?>" class="rounded-lg border bg-card text-card-foreground shadow-sm overflow-hidden h-full transition-all hover:shadow-md block" itemscope itemtype="https://schema.org/Event">
+		<a href="<?= esc_url($link) ?>" class="rounded-lg border bg-card text-card-foreground shadow-sm overflow-hidden h-full transition-all hover:shadow-md block border-gray-200
+" itemscope itemtype="https://schema.org/Event">
 			<meta itemprop="url" content="<?= esc_url($link) ?>" />
 			<meta itemprop="name" content="<?= esc_attr($title) ?>" />
 			<?php if ($date_raw): ?>

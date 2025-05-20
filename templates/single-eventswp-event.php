@@ -138,7 +138,7 @@ $start_datetime = $event_date ? date('c', strtotime("$event_date $event_time")) 
 					<a href="#register" class="inline-block mt-6 w-full text-center bg-primary text-white rounded-md px-8 py-3 text-sm font-medium hover:bg-primary/90">Register Now</a>
 				</div>
 
-				<div class="bg-primary/5 p-6 rounded-xl border border-primary/10">
+				<div class="bg-primary/5 p-6 rounded-xl border border-primary/10 border-gray-200">
 					<h3 class="font-medium mb-2">Share this event</h3>
 					<div class="flex gap-3">
 						<button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground !rounded-full !p-3 h-10 w-10">
