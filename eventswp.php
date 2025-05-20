@@ -24,6 +24,7 @@ define( 'EVENTSWP_VERSION', '1.0.1' );
 // Autoloader or manual includes
 require_once EVENTSWP_PLUGIN_DIR . 'includes/class-eventswp.php';
 
+
 // Initialize plugin
 function eventswp_init_plugin() {
 	$plugin = new \EventsWP\Plugin();

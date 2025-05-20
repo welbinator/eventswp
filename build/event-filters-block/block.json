@@ -1,0 +1,22 @@
+{
+  "apiVersion": 2,
+  "name": "eventswp/event-filters-block",
+  "title": "Event Filters",
+  "category": "widgets",
+  "icon": "filter",
+  "description": "Add a search and category filter for EventsWP events.",
+  "supports": {
+    "html": false
+  },
+  "textdomain": "eventswp",
+  "editorScript": "file:./index.js",
+  "viewScript": "file:./view.js",
+  "editorStyle": "eventswp-event-filters-editor-style",
+  "style": "eventswp-event-filters-style",
+  "render": "file:./render.php",
+  "dependencies": [
+    "wp-block-editor",
+    "wp-element",
+    "wp-blocks"
+  ]
+}
