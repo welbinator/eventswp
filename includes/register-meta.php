@@ -42,7 +42,7 @@ class Meta {
 			},
 		] );
 
-		register_post_meta( 'eventswp-event', 'event_end_time', [
+		register_post_meta( $post_type, 'event_end_time', [
 			'type'         => 'string',
 			'single'       => true,
 			'show_in_rest' => true,
@@ -93,5 +93,9 @@ class Meta {
 				return current_user_can( 'edit_posts' );
 			},
 		] );
+
+		
+
+
 	}
 }
