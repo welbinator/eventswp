@@ -27,6 +27,8 @@ class Plugin {
 		add_filter('single_template', [ $this, 'load_custom_single_template' ]);
 		add_filter('the_content', [ $this, 'maybe_override_calendar_page' ]);
 		add_action('rest_api_init', [ $this, 'register_calendar_endpoint' ]);
+
+			
 	}
 
 	public function enqueue_editor_assets() {
@@ -251,11 +253,17 @@ class Plugin {
 		]);
 
 		register_taxonomy('event-type', 'eventswp-event', [
-			'label' => __('Event Types', 'eventswp'),
-			'hierarchical' => false,
-			'show_in_rest' => true,
-			'public' => true,
+			'label'             => __('Event Types', 'eventswp'),
+			'hierarchical'      => false, // or true if you want hierarchy, but it doesn’t affect this fix
+			'public'            => true,
+			'show_in_rest'      => true, // needed for block editor + JS access
+			'meta_box_cb'       => false, // ⛔️ disables classic metabox
+			'show_ui'           => false, // ⛔️ disables default block editor sidebar panel
 		]);
+
+
+
+		
 	}
 
 	public function load_custom_single_template($template) {
@@ -267,4 +275,7 @@ class Plugin {
 		}
 		return $template;
 	}
+
+
+
 }
