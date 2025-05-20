@@ -9,6 +9,7 @@ use EventsWP\Settings;
 require_once EVENTSWP_PLUGIN_DIR . 'includes/class-settings.php';
 require_once EVENTSWP_PLUGIN_DIR . 'includes/ajax-handlers.php';
 require_once EVENTSWP_PLUGIN_DIR . 'includes/template-functions.php';
+require_once EVENTSWP_PLUGIN_DIR . 'includes/theme-overrides.php';
 
 
 class Plugin {
